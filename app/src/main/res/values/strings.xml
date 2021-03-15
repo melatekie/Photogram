@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Photogram</string>
+    <string name="username">username</string>
+    <string name="password">password</string>
+    <string name="login">Login</string>
+    <string name="description">Caption...</string>
+    <string name="take_photo">Take Photo</string>
+    <string name="submit">Submit</string>
+    <string name="input_photo">Input Photo</string>
+    <string name="log_out">Log Out</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="register">Register</string>
+    <string name="new_user">New user? </string>
+    <string name="sign_up_here">Sign up Here</string>
+    <string name="name">name</string>
+</resources>
