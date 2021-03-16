@@ -33,7 +33,7 @@ GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
 ## Notes
 
-A bit of a problem hiding API keys and getting issues with user log in. Never used instagram so not sure how to make it look like "instagram".
+A bit of a problem hiding API keys and getting issues with user log in.
 
 ## Open-source libraries used
 
