@@ -18,6 +18,8 @@ import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
 
+import java.util.Objects;
+
 public class SignupActivity extends AppCompatActivity {
 
     public static final String TAG = "SignupActivity";
@@ -50,35 +52,39 @@ public class SignupActivity extends AppCompatActivity {
         btnSignup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Create the ParseUser
-                ParseUser user = new ParseUser();
-                // Set core properties
-                user.setUsername(etUsername.getText().toString());
-                user.setPassword(etPassword.getText().toString());
-                user.put("name", etName.getText().toString());
-
-                String username = etUsername.getText().toString();
-                String password = etPassword.getText().toString();
-                String pdConfirm = etPdConfirm.getText().toString();
-                if (password.equals(pdConfirm)) {
-                    // Invoke signUpInBackground
-                    user.signUpInBackground(new SignUpCallback() {
-                        public void done(ParseException e) {
-                            if (e == null) {
-                                Toast.makeText(SignupActivity.this, "Successful Sign Up!", Toast.LENGTH_SHORT).show();
-                                loginUser(username, password);
-                            } else {
-                                ParseUser.logOut();
-                                Toast.makeText(SignupActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
-                            }
-                        }
-                    });
-                }
-                Toast.makeText(SignupActivity.this, "Passwords are not the same!", Toast.LENGTH_LONG).show();
-
+                SignUp();
             }
         });
 
+    }
+
+    private void SignUp() {
+        // Create the ParseUser
+        ParseUser user = new ParseUser();
+        // Set core properties
+        user.setUsername(Objects.requireNonNull(etUsername.getText()).toString());
+        user.setPassword(Objects.requireNonNull(etPassword.getText()).toString());
+        user.put("name", Objects.requireNonNull(etName.getText()).toString());
+
+        String username = etUsername.getText().toString();
+        String password = etPassword.getText().toString();
+        String pdConfirm = Objects.requireNonNull(etPdConfirm.getText()).toString();
+        if (password.equals(pdConfirm)) {
+            // Invoke signUpInBackground
+            user.signUpInBackground(new SignUpCallback() {
+                public void done(ParseException e) {
+                    if (e == null) {
+                        Toast.makeText(SignupActivity.this, "Successful Sign Up!", Toast.LENGTH_SHORT).show();
+                        loginUser(username, password);
+                    } else {
+                        ParseUser.logOut();
+                        Toast.makeText(SignupActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
+        } else {
+            Toast.makeText(SignupActivity.this, "Passwords are not the same!", Toast.LENGTH_LONG).show();
+        }
     }
 
     private final TextWatcher loginTextWatcher = new TextWatcher() {
@@ -89,10 +95,10 @@ public class SignupActivity extends AppCompatActivity {
 
         @Override
         public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            String name = etName.getText().toString().trim();
-            String username = etUsername.getText().toString().trim();
-            String password = etPassword.getText().toString().trim();
-            String pdConfirm = etPdConfirm.getText().toString().trim();
+            String name = Objects.requireNonNull(etName.getText()).toString().trim();
+            String username = Objects.requireNonNull(etUsername.getText()).toString().trim();
+            String password = Objects.requireNonNull(etPassword.getText()).toString().trim();
+            String pdConfirm = Objects.requireNonNull(etPdConfirm.getText()).toString().trim();
             btnSignup.setEnabled(!username.isEmpty() && !password.isEmpty() && !pdConfirm.isEmpty() && !name.isEmpty());
         }
 
