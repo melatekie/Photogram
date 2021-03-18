@@ -43,6 +43,17 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         return posts.size();
     }
 
+    //swipeContainer: clean all elements of recycler view
+    public void clear() {
+        posts.clear();
+        notifyDataSetChanged();
+    }
+    //swipeContainer: add list of items
+    public void addAll(List<Post> list) {
+        posts.addAll(list);
+        notifyDataSetChanged();
+    }
+
     class ViewHolder extends RecyclerView.ViewHolder {
 
         private TextView tvUsername;
