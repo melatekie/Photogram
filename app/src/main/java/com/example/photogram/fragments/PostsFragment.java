@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.photogram.EndlessRecyclerViewScrollListener;
 import com.example.photogram.Post;
 import com.example.photogram.PostsAdapter;
 import com.example.photogram.R;
@@ -34,6 +35,7 @@ public class PostsFragment extends Fragment {
     protected PostsAdapter adapter;
     protected List<Post> allPosts;
     private SwipeRefreshLayout swipeContainer;
+    EndlessRecyclerViewScrollListener scrollListener;
 
     public PostsFragment() {
         // Required empty public constructor
@@ -54,7 +56,10 @@ public class PostsFragment extends Fragment {
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                allPosts.clear();
+                scrollListener.resetState();
                 queryPosts();
+                swipeContainer.setRefreshing(false);
             }
         });
 
@@ -68,12 +73,28 @@ public class PostsFragment extends Fragment {
 
         rvPosts.setAdapter(adapter);
         //set the layout manager on the recycler view
-        rvPosts.setLayoutManager(new LinearLayoutManager(getContext()));
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        rvPosts.setLayoutManager(layoutManager);
+
+        scrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                Log.i(TAG, "onLoadMore: " + page);
+                loadMoreData();
+            }
+        };
+        rvPosts.addOnScrollListener(scrollListener);
+
+        queryPosts();
+    }
+
+    private void loadMoreData() {
         queryPosts();
     }
 
     protected void queryPosts() {
         ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
+        query.setSkip(allPosts.size()); //infinite scrolling
         query.include(Post.KEY_USER);
         query.setLimit(4);
         query.addDescendingOrder(Post.KEY_CREATED_AT);
@@ -89,7 +110,6 @@ public class PostsFragment extends Fragment {
                 }
                 allPosts.addAll(posts);
                 adapter.notifyDataSetChanged();
-                swipeContainer.setRefreshing(false);
             }
         });
     }
