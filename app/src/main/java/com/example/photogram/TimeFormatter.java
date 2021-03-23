@@ -64,7 +64,7 @@ public class TimeFormatter {
             then.setTime(format.parse(rawJsonDate));
             Date date = then.getTime();
 
-            SimpleDateFormat format1 = new SimpleDateFormat("h:mm a \u00b7 MMM dd, yyyy");
+            SimpleDateFormat format1 = new SimpleDateFormat("h:mm a \u00b7 MMM dd");
 
             time = format1.format(date);
 

@@ -1,10 +1,12 @@
 package com.example.photogram;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -12,6 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.parse.ParseFile;
+
+import org.parceler.Parcels;
 
 import java.util.List;
 
@@ -60,6 +64,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         private ImageView ivImage;
         private TextView tvDescription;
         private TextView tvTimestamp;
+        private LinearLayout llContainer;
 
 
         public ViewHolder(@NonNull View itemView) {
@@ -68,17 +73,27 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
             ivImage = itemView.findViewById(R.id.ivImage);
             tvDescription = itemView.findViewById(R.id.tvDescription);
             tvTimestamp = itemView.findViewById(R.id.tvTimestamp);
+            llContainer = itemView.findViewById(R.id.llContainer);
         }
 
         public void bind(Post post) {
             //Bind the post data to the view elements
             tvDescription.setText(post.getDescription());
             tvUsername.setText(post.getUser().getUsername());
-            tvTimestamp.setText(TimeFormatter.getTimeDifference(post.getCreatedAt().toString()));
+            tvTimestamp.setText(post.getTimeDiff());
             ParseFile image = post.getImage();
             if (image != null) {
                 Glide.with(context).load(image.getUrl()).into(ivImage);
             }
+            llContainer.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent i = new Intent(context, PostDetailActivity.class);
+                    i.putExtra("post", Parcels.wrap(post));
+                    context.startActivity(i);
+                }
+            });
+
         }
     }
 }
